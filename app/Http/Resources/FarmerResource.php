@@ -11,6 +11,8 @@ class FarmerResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $outstandingDebt = (float) ($this->outstanding_debt ?? 0);
+
         return [
             'id' => $this->id,
             'identifier' => $this->identifier,
@@ -18,6 +20,8 @@ class FarmerResource extends JsonResource
             'lastname' => $this->lastname,
             'phone' => $this->phone,
             'credit_limit' => $this->credit_limit,
+            'outstanding_debt' => $outstandingDebt,
+            'available_credit' => (float) $this->credit_limit - $outstandingDebt,
         ];
     }
 }
