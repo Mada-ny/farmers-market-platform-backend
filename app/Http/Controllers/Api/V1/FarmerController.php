@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Farmer\IndexFarmerRequest;
 use App\Http\Requests\Farmer\StoreFarmerRequest;
 use App\Http\Requests\Farmer\UpdateFarmerRequest;
 use App\Http\Resources\DebtResource;
@@ -20,10 +21,10 @@ class FarmerController extends Controller
         private readonly FarmerService $farmerService
     ) {}
 
-    public function index(): AnonymousResourceCollection
+    public function index(IndexFarmerRequest $request): AnonymousResourceCollection
     {
         return FarmerResource::collection(
-            $this->farmerService->list()
+            $this->farmerService->list($request->validated())
         );
     }
 
@@ -38,14 +39,14 @@ class FarmerController extends Controller
 
     public function show(Farmer $farmer): FarmerResource
     {
-        return FarmerResource::make($farmer);
+        return FarmerResource::make($this->loadDebtSummary($farmer));
     }
 
     public function update(UpdateFarmerRequest $request, Farmer $farmer): FarmerResource
     {
         $farmer = $this->farmerService->update($farmer, $request->validated());
 
-        return FarmerResource::make($farmer);
+        return FarmerResource::make($this->loadDebtSummary($farmer));
     }
 
     public function destroy(Farmer $farmer): JsonResponse
@@ -59,6 +60,14 @@ class FarmerController extends Controller
     {
         return DebtResource::collection(
             $this->farmerService->outstandingDebts($farmer)
+        );
+    }
+
+    private function loadDebtSummary(Farmer $farmer): Farmer
+    {
+        return $farmer->loadSum(
+            ['debts as outstanding_debt' => fn ($q) => $q->where('remaining_amount', '>', 0)],
+            'remaining_amount'
         );
     }
 }

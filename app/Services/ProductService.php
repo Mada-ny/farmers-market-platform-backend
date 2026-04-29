@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductService
 {
-    public function list(): Collection
+    public function list(array $filters = []): LengthAwarePaginator
     {
-        return Product::with('category')->get();
+        return Product::with('category')
+            ->when(isset($filters['category_id']), fn ($q) => $q->where('category_id', $filters['category_id']))
+            ->paginate($filters['per_page'] ?? 15);
     }
 
     public function create(array $data): Product

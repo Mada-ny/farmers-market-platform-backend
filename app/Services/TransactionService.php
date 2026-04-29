@@ -10,14 +10,20 @@ use App\Models\Debt;
 use App\Models\Farmer;
 use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class TransactionService
 {
-    public function list(): Collection
+    public function list(array $filters = []): LengthAwarePaginator
     {
-        return Transaction::with(['farmer', 'operator'])->latest()->get();
+        return Transaction::with(['farmer', 'operator'])
+            ->latest()
+            ->when(isset($filters['farmer_id']), fn ($q) => $q->where('farmer_id', $filters['farmer_id']))
+            ->when(isset($filters['payment_method']), fn ($q) => $q->where('payment_method', $filters['payment_method']))
+            ->when(isset($filters['date_from']), fn ($q) => $q->whereDate('created_at', '>=', $filters['date_from']))
+            ->when(isset($filters['date_to']), fn ($q) => $q->whereDate('created_at', '<=', $filters['date_to']))
+            ->paginate($filters['per_page'] ?? 15);
     }
 
     public function create(array $data, User $operator): Transaction
