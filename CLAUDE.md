@@ -97,6 +97,7 @@ For detailed standards, read the relevant file before starting work:
 
 - Always create a new branch for each feature or bug fix
 - Branch naming: `feature/short-description`, `fix/short-description`
+- Push the branch to remote immediately after creating it (`git push -u origin <branch>`) — this allows GitHub PRs to have a proper diff; never merge locally before pushing
 - Always run `./vendor/bin/pint` before committing
 - Commit messages follow conventional commits format:
   `feat:`, `fix:`, `chore:`, `refactor:`, `test:`
