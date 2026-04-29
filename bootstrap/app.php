@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Exceptions\CreditLimitExceededException;
+use App\Exceptions\NoOutstandingDebtException;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -29,6 +30,13 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (CreditLimitExceededException $e, Request $request): JsonResponse {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        });
+
+        $exceptions->render(function (NoOutstandingDebtException $e, Request $request): JsonResponse {
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
