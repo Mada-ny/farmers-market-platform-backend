@@ -1,8 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Exceptions\CreditLimitExceededException;
+use App\Http\Middleware\RoleMiddleware;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,8 +23,51 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'role' => RoleMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (CreditLimitExceededException $e, Request $request): JsonResponse {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        });
+
+        $exceptions->render(function (AuthenticationException $e, Request $request): JsonResponse {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated.',
+            ], 401);
+        });
+
+        $exceptions->render(function (AccessDeniedHttpException $e, Request $request): JsonResponse {
+            return response()->json([
+                'success' => false,
+                'message' => 'Forbidden.',
+            ], 403);
+        });
+
+        $exceptions->render(function (ModelNotFoundException $e, Request $request): JsonResponse {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resource not found.',
+            ], 404);
+        });
+
+        $exceptions->render(function (NotFoundHttpException $e, Request $request): JsonResponse {
+            return response()->json([
+                'success' => false,
+                'message' => 'Route not found.',
+            ], 404);
+        });
+
+        $exceptions->render(function (ValidationException $e, Request $request): JsonResponse {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'errors' => $e->errors(),
+            ], 422);
+        });
     })->create();
