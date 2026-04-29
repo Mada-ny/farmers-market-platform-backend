@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Exceptions\NoOutstandingDebtException;
 use App\Models\Debt;
 use App\Models\Farmer;
 use App\Models\Repayment;
@@ -17,6 +18,14 @@ class RepaymentService
     {
         return DB::transaction(function () use ($data, $operator) {
             $farmer = Farmer::findOrFail($data['farmer_id']);
+
+            $hasOutstandingDebt = $farmer->debts()
+                ->where('remaining_amount', '>', 0)
+                ->exists();
+
+            if (! $hasOutstandingDebt) {
+                throw new NoOutstandingDebtException;
+            }
 
             $fcfaValue = $data['kg_received'] * $data['commodity_rate'];
 

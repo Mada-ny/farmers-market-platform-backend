@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\IndexUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
@@ -19,10 +20,10 @@ class UserController extends Controller
         private readonly UserService $userService
     ) {}
 
-    public function index(): AnonymousResourceCollection
+    public function index(IndexUserRequest $request): AnonymousResourceCollection
     {
         return UserResource::collection(
-            $this->userService->list()
+            $this->userService->list($request->validated())
         );
     }
 

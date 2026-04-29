@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Category;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CategoryService
 {
-    public function list(): Collection
+    public function list(array $filters = []): LengthAwarePaginator
     {
-        return Category::with('children')->whereNull('parent_id')->get();
+        return Category::with('children')
+            ->whereNull('parent_id')
+            ->paginate($filters['per_page'] ?? 15);
     }
 
     public function create(array $data): Category

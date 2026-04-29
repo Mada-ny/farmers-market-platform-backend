@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
             FarmerSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }

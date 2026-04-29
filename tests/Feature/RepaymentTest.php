@@ -53,6 +53,20 @@ class RepaymentTest extends TestCase
         return $debt;
     }
 
+    public function test_repayment_fails_when_farmer_has_no_outstanding_debt(): void
+    {
+        $this->actingAs($this->operator)
+            ->postJson('/api/v1/repayments', [
+                'farmer_id' => $this->farmer->id,
+                'kg_received' => 10,
+                'commodity_rate' => 500,
+            ])
+            ->assertStatus(422)
+            ->assertJsonPath('success', false);
+
+        $this->assertDatabaseCount('repayments', 0);
+    }
+
     public function test_repayment_applies_fifo_to_oldest_debt_first(): void
     {
         $old = $this->createDebt(5000, '2026-01-01 00:00:00');

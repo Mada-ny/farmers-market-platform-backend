@@ -91,11 +91,13 @@ For detailed standards, read the relevant file before starting work:
 - Never install new packages without asking first
 - Never guess on business logic (credit limit, FIFO, interest) — read `.claude/rules/business-rules.md`
 - `dd()`, `dump()`, `ray()` must never appear in committed code
+- Update `postman_collection.json` whenever new endpoints are added or modified
 
 ## Git Workflow
 
 - Always create a new branch for each feature or bug fix
 - Branch naming: `feature/short-description`, `fix/short-description`
+- Push the branch to remote immediately after creating it (`git push -u origin <branch>`) — this allows GitHub PRs to have a proper diff; never merge locally before pushing
 - Always run `./vendor/bin/pint` before committing
 - Commit messages follow conventional commits format:
   `feat:`, `fix:`, `chore:`, `refactor:`, `test:`
@@ -103,3 +105,9 @@ For detailed standards, read the relevant file before starting work:
 - Write clear, descriptive commit messages
 - Never commit code that breaks existing tests
 - Don't mention "Co-Authored-By Claude" in commit messages
+
+## Progress Tracking
+
+- Refer to `progress.md` for current status and TODO items
+- Update `progress.md` as you complete tasks
+- Mark completed items with [x]
