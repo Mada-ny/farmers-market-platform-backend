@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Product\IndexProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
@@ -19,10 +20,10 @@ class ProductController extends Controller
         private readonly ProductService $productService
     ) {}
 
-    public function index(): AnonymousResourceCollection
+    public function index(IndexProductRequest $request): AnonymousResourceCollection
     {
         return ProductResource::collection(
-            $this->productService->list()
+            $this->productService->list($request->validated())
         );
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Transaction\IndexTransactionRequest;
 use App\Http\Requests\Transaction\StoreTransactionRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
@@ -18,10 +19,10 @@ class TransactionController extends Controller
         private readonly TransactionService $transactionService
     ) {}
 
-    public function index(): AnonymousResourceCollection
+    public function index(IndexTransactionRequest $request): AnonymousResourceCollection
     {
         return TransactionResource::collection(
-            $this->transactionService->list()
+            $this->transactionService->list($request->validated())
         );
     }
 

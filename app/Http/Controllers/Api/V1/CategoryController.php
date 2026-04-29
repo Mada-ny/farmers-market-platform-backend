@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\IndexCategoryRequest;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
@@ -19,10 +20,10 @@ class CategoryController extends Controller
         private readonly CategoryService $categoryService
     ) {}
 
-    public function index(): AnonymousResourceCollection
+    public function index(IndexCategoryRequest $request): AnonymousResourceCollection
     {
         return CategoryResource::collection(
-            $this->categoryService->list()
+            $this->categoryService->list($request->validated())
         );
     }
 
