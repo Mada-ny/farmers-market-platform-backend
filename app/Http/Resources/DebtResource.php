@@ -16,6 +16,7 @@ class DebtResource extends JsonResource
             'transaction_id' => $this->transaction_id,
             'amount_fcfa' => $this->amount_fcfa,
             'remaining_amount' => $this->remaining_amount,
+            'amount_applied' => $this->whenPivotLoaded('repayment_debt', fn () => $this->pivot->amount_applied),
             'created_at' => $this->created_at,
         ];
     }

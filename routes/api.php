@@ -43,7 +43,8 @@ Route::prefix('v1')->group(function () {
             ->middleware('role:operator');
 
         // Repayments — Operator only
-        Route::post('repayments', [RepaymentController::class, 'store'])
+        Route::apiResource('repayments', RepaymentController::class)
+            ->only(['index', 'store', 'show'])
             ->middleware('role:operator');
     });
 });
