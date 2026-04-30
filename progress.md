@@ -50,62 +50,44 @@
 - [x] `PUT /api/v1/farmers/{id}`
 - [x] `DELETE /api/v1/farmers/{id}`
 - [x] `GET /api/v1/farmers/{id}/debts` — outstanding debts ordered by date (FIFO)
+- [x] `outstanding_debt` and `available_credit` exposed on every farmer response
 
 ### Transactions
 
-- [x] `GET /api/v1/transactions`
+- [x] `GET /api/v1/transactions` — paginated, filterable by `farmer_id`, `payment_method`, `date_from`, `date_to`
 - [x] `POST /api/v1/transactions` — cash and credit (interest + credit limit enforcement)
 - [x] `GET /api/v1/transactions/{id}`
 - [x] Debt automatically created on credit transactions
 - [x] Credit limit check before any credit transaction
+- [x] `interest_rate` optional — falls back to `DEFAULT_INTEREST_RATE` config (default 0.10)
+- [x] Embedded farmer in transaction response reflects live `outstanding_debt` after creation
 
 ### Repayments
 
-- [x] `GET /api/v1/repayments` — list with pagination, filterable by `farmer_id`
+- [x] `GET /api/v1/repayments` — paginated, filterable by `farmer_id`
 - [x] `GET /api/v1/repayments/{id}` — detail with debts settled and `amount_applied` per debt
 - [x] `POST /api/v1/repayments` — FIFO allocation across outstanding debts
 - [x] Blocked when farmer has no outstanding debt (422)
 - [x] Partial repayments supported (debt stays open until fully settled)
 
+### Pagination & Filtering
+
+- [x] All listing endpoints support `per_page` param
+- [x] Products filterable by `category_id`
+- [x] Transactions filterable by `farmer_id`, `payment_method`, `date_from`, `date_to`
+- [x] Repayments filterable by `farmer_id`
+
 ### Quality
 
 - [x] 55 feature tests (auth, role enforcement, FIFO, partial repayment, credit limit, cascade, pagination, filters, farmer insights, repayment history, interest rate config)
 - [x] Realistic seeders (3 users, 33 categories, 26 products, 15 Ivorian farmers)
-- [x] Postman collection (`postman_collection.json`)
-- [x] PR #2 open on `feature/foundation-api`
+- [x] Postman collection (`postman_collection.json`) — all endpoints including repayment history
 
 ---
 
 ## To Do
 
-### Pagination & Filtering
-
-- [x] Paginate all listing endpoints (`users`, `categories`, `products`, `farmers`, `transactions`) with `per_page` param
-- [x] Filter transactions by `farmer_id`, `payment_method`, `date_from`, `date_to`
-- [x] Filter products by `category_id`
-
-### Farmer Insights
-
-- [x] Expose `outstanding_debt` (sum of `remaining_amount`) on `FarmerResource`
-- [x] Expose `available_credit` (`credit_limit - outstanding_debt`) on `FarmerResource`
-
-### Repayment History
-
-- [x] `GET /api/v1/repayments` — list repayments (filterable by farmer)
-- [x] `GET /api/v1/repayments/{id}` — detail with debts settled
-
-### Interest Rate Config
-
-- [x] Store a default interest rate in `config/business.php` (`DEFAULT_INTEREST_RATE` env, default 0.10)
-- [x] Make `interest_rate` optional on credit transactions (falls back to default)
-
 ### Security Hardening
 
 - [ ] Scope `GET /api/v1/transactions` to the authenticated operator's own transactions
 - [ ] Prevent an operator from creating a transaction for a farmer that belongs to another operator's zone (if applicable)
-
-### Testing
-
-- [x] Tests for pagination and filter params
-- [x] Tests for `outstanding_debt` and `available_credit` on farmer
-- [x] Tests for repayment history endpoints
