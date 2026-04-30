@@ -466,6 +466,37 @@
       "name": "Repayments",
       "item": [
         {
+          "name": "List Repayments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/repayments",
+              "host": ["{{base_url}}"],
+              "path": ["repayments"],
+              "query": [
+                { "key": "per_page",  "value": "15", "disabled": true, "description": "Items per page (1–100, default: 15)" },
+                { "key": "page",      "value": "1",  "disabled": true, "description": "Page number" },
+                { "key": "farmer_id", "value": "1",  "disabled": true, "description": "Filter by farmer ID" }
+              ]
+            },
+            "header": [
+              { "key": "Accept",        "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ]
+          }
+        },
+        {
+          "name": "Get Repayment",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/repayments/1",
+            "header": [
+              { "key": "Accept",        "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ]
+          }
+        },
+        {
           "name": "Record Repayment",
           "request": {
             "method": "POST",
