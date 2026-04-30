@@ -113,6 +113,19 @@ class TransactionTest extends TestCase
         $this->assertDatabaseCount('debts', 1);
     }
 
+    public function test_credit_transaction_response_includes_updated_outstanding_debt(): void
+    {
+        $response = $this->actingAs($this->operator)
+            ->postJson('/api/v1/transactions', $this->payload([
+                'payment_method' => 'credit',
+                'interest_rate' => 0.10,
+            ]));
+
+        $response->assertStatus(201)
+            ->assertJsonPath('data.farmer.outstanding_debt', 2200)
+            ->assertJsonPath('data.farmer.available_credit', 500_000 - 2200);
+    }
+
     public function test_credit_transaction_without_interest_rate_uses_config_default(): void
     {
         config(['business.interest_rate' => 0.15]);
