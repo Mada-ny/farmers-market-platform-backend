@@ -35,16 +35,16 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('farmers', FarmerController::class)
             ->middleware('role:operator');
         Route::get('farmers/{farmer}/debts', [FarmerController::class, 'debts'])
-            ->middleware('role:operator');
+            ->middleware('role:operator,supervisor');
 
-        // Transactions — Operator only
-        Route::apiResource('transactions', TransactionController::class)
-            ->only(['index', 'store', 'show'])
-            ->middleware('role:operator');
+        // Transactions — Operator writes, Operator+Supervisor reads
+        Route::get('transactions', [TransactionController::class, 'index'])->middleware('role:operator,supervisor');
+        Route::post('transactions', [TransactionController::class, 'store'])->middleware('role:operator');
+        Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->middleware('role:operator,supervisor');
 
-        // Repayments — Operator only
-        Route::apiResource('repayments', RepaymentController::class)
-            ->only(['index', 'store', 'show'])
-            ->middleware('role:operator');
+        // Repayments — Operator writes, Operator+Supervisor reads
+        Route::get('repayments', [RepaymentController::class, 'index'])->middleware('role:operator,supervisor');
+        Route::post('repayments', [RepaymentController::class, 'store'])->middleware('role:operator');
+        Route::get('repayments/{repayment}', [RepaymentController::class, 'show'])->middleware('role:operator,supervisor');
     });
 });

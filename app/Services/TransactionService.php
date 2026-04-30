@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\PaymentMethod;
+use App\Enums\Role;
 use App\Exceptions\CreditLimitExceededException;
 use App\Models\Debt;
 use App\Models\Farmer;
@@ -15,10 +16,11 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionService
 {
-    public function list(array $filters = []): LengthAwarePaginator
+    public function list(array $filters = [], ?User $viewer = null): LengthAwarePaginator
     {
         return Transaction::with(['farmer' => fn ($q) => $q->withOutstandingDebt(), 'operator'])
             ->latest()
+            ->when($viewer?->role === Role::Operator, fn ($q) => $q->where('operator_id', $viewer->id))
             ->when(isset($filters['farmer_id']), fn ($q) => $q->where('farmer_id', $filters['farmer_id']))
             ->when(isset($filters['payment_method']), fn ($q) => $q->where('payment_method', $filters['payment_method']))
             ->when(isset($filters['date_from']), fn ($q) => $q->whereDate('created_at', '>=', $filters['date_from']))

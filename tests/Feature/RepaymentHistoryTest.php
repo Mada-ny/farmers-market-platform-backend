@@ -195,4 +195,55 @@ class RepaymentHistoryTest extends TestCase
             ->getJson('/api/v1/repayments/9999')
             ->assertStatus(404);
     }
+
+    public function test_operator_cannot_see_another_operators_repayment(): void
+    {
+        $otherOperator = User::factory()->operator()->create();
+        $repayment = $this->createRepaymentWithDebt(10_000, 10, 500);
+
+        $this->actingAs($otherOperator)
+            ->getJson("/api/v1/repayments/{$repayment->id}")
+            ->assertStatus(403);
+    }
+
+    public function test_operator_only_sees_own_repayments_in_list(): void
+    {
+        $otherOperator = User::factory()->operator()->create();
+
+        $this->createRepaymentWithDebt(10_000, 10, 500);
+
+        Repayment::create([
+            'farmer_id' => $this->farmer->id,
+            'operator_id' => $otherOperator->id,
+            'kg_received' => 5,
+            'commodity_rate' => 500,
+            'fcfa_value' => 2_500,
+        ]);
+
+        $this->actingAs($this->operator)
+            ->getJson('/api/v1/repayments')
+            ->assertStatus(200)
+            ->assertJsonPath('meta.total', 1);
+    }
+
+    public function test_supervisor_can_see_all_repayments(): void
+    {
+        $supervisor = User::factory()->supervisor()->create();
+        $otherOperator = User::factory()->operator()->create();
+
+        $this->createRepaymentWithDebt(10_000, 10, 500);
+
+        Repayment::create([
+            'farmer_id' => $this->farmer->id,
+            'operator_id' => $otherOperator->id,
+            'kg_received' => 5,
+            'commodity_rate' => 500,
+            'fcfa_value' => 2_500,
+        ]);
+
+        $this->actingAs($supervisor)
+            ->getJson('/api/v1/repayments')
+            ->assertStatus(200)
+            ->assertJsonPath('meta.total', 2);
+    }
 }

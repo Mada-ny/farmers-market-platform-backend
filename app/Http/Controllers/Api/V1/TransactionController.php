@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaction\IndexTransactionRequest;
 use App\Http\Requests\Transaction\StoreTransactionRequest;
@@ -22,7 +23,7 @@ class TransactionController extends Controller
     public function index(IndexTransactionRequest $request): AnonymousResourceCollection
     {
         return TransactionResource::collection(
-            $this->transactionService->list($request->validated())
+            $this->transactionService->list($request->validated(), $request->user())
         );
     }
 
@@ -37,6 +38,11 @@ class TransactionController extends Controller
 
     public function show(Transaction $transaction): TransactionResource
     {
+        abort_if(
+            request()->user()->role === Role::Operator && $transaction->operator_id !== request()->user()->id,
+            403
+        );
+
         $transaction->load(['farmer', 'operator', 'items.product']);
         $transaction->farmer->loadOutstandingDebt();
 
