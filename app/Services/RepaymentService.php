@@ -10,10 +10,19 @@ use App\Models\Farmer;
 use App\Models\Repayment;
 use App\Models\RepaymentDebt;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class RepaymentService
 {
+    public function list(array $filters = []): LengthAwarePaginator
+    {
+        return Repayment::with(['farmer', 'operator'])
+            ->latest()
+            ->when(isset($filters['farmer_id']), fn ($q) => $q->where('farmer_id', $filters['farmer_id']))
+            ->paginate($filters['per_page'] ?? 15);
+    }
+
     public function create(array $data, User $operator): Repayment
     {
         return DB::transaction(function () use ($data, $operator) {
