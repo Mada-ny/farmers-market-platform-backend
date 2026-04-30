@@ -105,5 +105,5 @@
 ### Testing
 
 - [x] Tests for pagination and filter params
-- [ ] Tests for `outstanding_debt` and `available_credit` on farmer
-- [ ] Tests for repayment history endpoints
+- [x] Tests for `outstanding_debt` and `available_credit` on farmer
+- [x] Tests for repayment history endpoints
