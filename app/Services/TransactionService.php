@@ -72,7 +72,14 @@ class TransactionService
                 ]);
             }
 
-            return $transaction->load(['farmer', 'operator', 'items.product', 'debt']);
+            $transaction->load(['farmer', 'operator', 'items.product', 'debt']);
+
+            $transaction->farmer->loadSum(
+                ['debts as outstanding_debt' => fn ($q) => $q->where('remaining_amount', '>', 0)],
+                'remaining_amount'
+            );
+
+            return $transaction;
         });
     }
 
