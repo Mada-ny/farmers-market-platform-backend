@@ -6,6 +6,7 @@ namespace Tests\Feature;
 
 use App\Models\Farmer;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -159,5 +160,42 @@ class TransactionTest extends TestCase
             'interest_rate' => 0.20,
             'credited_amount' => 2400.00, // 2000 × 1.20
         ]);
+    }
+
+    public function test_operator_only_sees_own_transactions(): void
+    {
+        $otherOperator = User::factory()->operator()->create();
+
+        Transaction::factory()->create([
+            'farmer_id' => $this->farmer->id,
+            'operator_id' => $this->operator->id,
+        ]);
+
+        Transaction::factory()->create([
+            'farmer_id' => $this->farmer->id,
+            'operator_id' => $otherOperator->id,
+        ]);
+
+        $response = $this->actingAs($this->operator)
+            ->getJson('/api/v1/transactions');
+
+        $response->assertStatus(200)
+            ->assertJsonPath('meta.total', 1);
+    }
+
+    public function test_operator_cannot_see_other_operators_transactions(): void
+    {
+        $otherOperator = User::factory()->operator()->create();
+
+        Transaction::factory()->create([
+            'farmer_id' => $this->farmer->id,
+            'operator_id' => $otherOperator->id,
+        ]);
+
+        $response = $this->actingAs($this->operator)
+            ->getJson('/api/v1/transactions');
+
+        $response->assertStatus(200)
+            ->assertJsonPath('meta.total', 0);
     }
 }

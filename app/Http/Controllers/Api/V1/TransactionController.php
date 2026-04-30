@@ -22,7 +22,7 @@ class TransactionController extends Controller
     public function index(IndexTransactionRequest $request): AnonymousResourceCollection
     {
         return TransactionResource::collection(
-            $this->transactionService->list($request->validated())
+            $this->transactionService->list($request->validated(), $request->user())
         );
     }
 
