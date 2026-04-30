@@ -28,9 +28,10 @@ class RepaymentController extends Controller
 
     public function show(Repayment $repayment): RepaymentResource
     {
-        return RepaymentResource::make(
-            $repayment->load(['farmer', 'operator', 'debts'])
-        );
+        $repayment->load(['farmer', 'operator', 'debts']);
+        $repayment->farmer->loadOutstandingDebt();
+
+        return RepaymentResource::make($repayment);
     }
 
     public function store(StoreRepaymentRequest $request): JsonResponse

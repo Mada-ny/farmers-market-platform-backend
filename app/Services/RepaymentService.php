@@ -17,7 +17,7 @@ class RepaymentService
 {
     public function list(array $filters = []): LengthAwarePaginator
     {
-        return Repayment::with(['farmer', 'operator'])
+        return Repayment::with(['farmer' => fn ($q) => $q->withOutstandingDebt(), 'operator'])
             ->latest()
             ->when(isset($filters['farmer_id']), fn ($q) => $q->where('farmer_id', $filters['farmer_id']))
             ->paginate($filters['per_page'] ?? 15);
@@ -48,7 +48,10 @@ class RepaymentService
 
             $this->applyFifo($repayment, $farmer, $fcfaValue);
 
-            return $repayment->load(['farmer', 'operator', 'debts']);
+            $repayment->load(['farmer', 'operator', 'debts']);
+            $repayment->farmer->loadOutstandingDebt();
+
+            return $repayment;
         });
     }
 

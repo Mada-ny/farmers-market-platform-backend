@@ -6,15 +6,13 @@ namespace App\Services;
 
 use App\Models\Farmer;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class FarmerService
 {
     public function list(array $filters = []): LengthAwarePaginator
     {
-        return Farmer::withSum(
-            ['debts as outstanding_debt' => fn ($q) => $q->where('remaining_amount', '>', 0)],
-            'remaining_amount'
-        )->paginate($filters['per_page'] ?? 15);
+        return Farmer::withOutstandingDebt()->paginate($filters['per_page'] ?? 15);
     }
 
     public function create(array $data): Farmer

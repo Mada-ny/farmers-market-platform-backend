@@ -37,6 +37,9 @@ class TransactionController extends Controller
 
     public function show(Transaction $transaction): TransactionResource
     {
-        return TransactionResource::make($transaction->load(['farmer', 'operator', 'items.product']));
+        $transaction->load(['farmer', 'operator', 'items.product']);
+        $transaction->farmer->loadOutstandingDebt();
+
+        return TransactionResource::make($transaction);
     }
 }
