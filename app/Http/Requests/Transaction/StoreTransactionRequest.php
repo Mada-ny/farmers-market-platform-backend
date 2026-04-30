@@ -20,7 +20,7 @@ class StoreTransactionRequest extends FormRequest
         return [
             'farmer_id' => ['required', 'integer', 'exists:farmers,id'],
             'payment_method' => ['required', Rule::enum(PaymentMethod::class)],
-            'interest_rate' => ['required_if:payment_method,credit', 'nullable', 'numeric', 'min:0', 'max:1'],
+            'interest_rate' => ['sometimes', 'nullable', 'numeric', 'min:0', 'max:1'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.product_id' => ['required', 'integer', 'exists:products,id'],
             'items.*.quantity' => ['required', 'integer', 'min:1'],

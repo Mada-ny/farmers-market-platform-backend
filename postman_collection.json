@@ -437,6 +437,7 @@
           "request": {
             "method": "POST",
             "url": "{{base_url}}/transactions",
+            "description": "interest_rate is optional. Omit it to use the server default (DEFAULT_INTEREST_RATE env, currently 0.10 = 10%). Provide it to override per-transaction.",
             "header": [
               { "key": "Accept",        "value": "application/json" },
               { "key": "Authorization", "value": "Bearer {{token}}" }
