@@ -78,6 +78,23 @@ foreach ($debts as $debt) {
 | Manage supervisors            | ✅    | ❌         | ❌       |
 | Manage operators              | ❌    | ✅         | ❌       |
 | Manage products & categories  | ✅    | ✅         | ❌       |
+| View products & categories    | ✅    | ✅         | ✅       |
 | Manage farmers                | ❌    | ❌         | ✅       |
 | Place transactions            | ❌    | ❌         | ✅       |
 | Record repayments             | ❌    | ❌         | ✅       |
+
+## 7. Data Visibility & Scoping
+
+| Resource      | Admin | Supervisor | Operator                    |
+|---------------|-------|------------|-----------------------------|
+| Supervisors   | All   | Own only   | None                        |
+| Operators     | None  | All        | None (self only)            |
+| Farmers       | None  | All        | All (can manage any farmer) |
+| Transactions  | None  | All        | Own only (created by self)  |
+| Debts         | None  | All        | Own transactions' debts     |
+| Repayments    | None  | All        | Own repayments only         |
+
+**Notes:**
+
+- Operators cannot see transactions created by other operators
+- Admins do not have visibility into operational data

@@ -25,11 +25,18 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('users', UserController::class)
             ->middleware('role:admin,supervisor');
 
-        // Categories & Products — Admin + Supervisor
-        Route::apiResource('categories', CategoryController::class)
-            ->middleware('role:admin,supervisor');
-        Route::apiResource('products', ProductController::class)
-            ->middleware('role:admin,supervisor');
+        // Categories & Products — Admin + Supervisor write; all roles read
+        Route::get('categories', [CategoryController::class, 'index'])->middleware('role:admin,supervisor,operator');
+        Route::post('categories', [CategoryController::class, 'store'])->middleware('role:admin,supervisor');
+        Route::get('categories/{category}', [CategoryController::class, 'show'])->middleware('role:admin,supervisor,operator');
+        Route::put('categories/{category}', [CategoryController::class, 'update'])->middleware('role:admin,supervisor');
+        Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->middleware('role:admin,supervisor');
+
+        Route::get('products', [ProductController::class, 'index'])->middleware('role:admin,supervisor,operator');
+        Route::post('products', [ProductController::class, 'store'])->middleware('role:admin,supervisor');
+        Route::get('products/{product}', [ProductController::class, 'show'])->middleware('role:admin,supervisor,operator');
+        Route::put('products/{product}', [ProductController::class, 'update'])->middleware('role:admin,supervisor');
+        Route::delete('products/{product}', [ProductController::class, 'destroy'])->middleware('role:admin,supervisor');
 
         // Farmers — Operator only
         Route::apiResource('farmers', FarmerController::class)

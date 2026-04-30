@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -42,5 +43,24 @@ class CategoryTest extends TestCase
         $this->actingAs($operator)
             ->postJson('/api/v1/categories', ['name' => 'Fruits'])
             ->assertStatus(403);
+    }
+
+    public function test_operator_can_list_categories(): void
+    {
+        $operator = User::factory()->operator()->create();
+
+        $this->actingAs($operator)
+            ->getJson('/api/v1/categories')
+            ->assertStatus(200);
+    }
+
+    public function test_operator_can_view_a_category(): void
+    {
+        $operator = User::factory()->operator()->create();
+        $category = Category::factory()->create();
+
+        $this->actingAs($operator)
+            ->getJson("/api/v1/categories/{$category->id}")
+            ->assertStatus(200);
     }
 }
