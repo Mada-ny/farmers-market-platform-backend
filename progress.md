@@ -61,13 +61,15 @@
 
 ### Repayments
 
+- [x] `GET /api/v1/repayments` — list with pagination, filterable by `farmer_id`
+- [x] `GET /api/v1/repayments/{id}` — detail with debts settled and `amount_applied` per debt
 - [x] `POST /api/v1/repayments` — FIFO allocation across outstanding debts
 - [x] Blocked when farmer has no outstanding debt (422)
 - [x] Partial repayments supported (debt stays open until fully settled)
 
 ### Quality
 
-- [x] 44 feature tests (auth, role enforcement, FIFO, partial repayment, credit limit, cascade, pagination, filters, farmer insights)
+- [x] 55 feature tests (auth, role enforcement, FIFO, partial repayment, credit limit, cascade, pagination, filters, farmer insights, repayment history, interest rate config)
 - [x] Realistic seeders (3 users, 33 categories, 26 products, 15 Ivorian farmers)
 - [x] Postman collection (`postman_collection.json`)
 - [x] PR #2 open on `feature/foundation-api`
@@ -89,13 +91,13 @@
 
 ### Repayment History
 
-- [ ] `GET /api/v1/repayments` — list repayments (filterable by farmer)
-- [ ] `GET /api/v1/repayments/{id}` — detail with debts settled
+- [x] `GET /api/v1/repayments` — list repayments (filterable by farmer)
+- [x] `GET /api/v1/repayments/{id}` — detail with debts settled
 
 ### Interest Rate Config
 
-- [ ] Store a default interest rate in `config/` or a settings table
-- [ ] Make `interest_rate` optional on credit transactions (falls back to default)
+- [x] Store a default interest rate in `config/business.php` (`DEFAULT_INTEREST_RATE` env, default 0.10)
+- [x] Make `interest_rate` optional on credit transactions (falls back to default)
 
 ### Security Hardening
 
