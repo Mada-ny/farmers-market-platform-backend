@@ -59,7 +59,7 @@ class FarmerController extends Controller
     public function debts(Farmer $farmer): AnonymousResourceCollection
     {
         return DebtResource::collection(
-            $this->farmerService->outstandingDebts($farmer)
+            $this->farmerService->outstandingDebts($farmer, request()->user())
         );
     }
 

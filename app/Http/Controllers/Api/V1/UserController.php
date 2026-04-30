@@ -23,7 +23,7 @@ class UserController extends Controller
     public function index(IndexUserRequest $request): AnonymousResourceCollection
     {
         return UserResource::collection(
-            $this->userService->list($request->validated())
+            $this->userService->list($request->validated(), $request->user())
         );
     }
 
@@ -38,6 +38,8 @@ class UserController extends Controller
 
     public function show(User $user): UserResource
     {
+        abort_if($user->role !== request()->user()->role->manageableRole(), 403);
+
         return UserResource::make($user);
     }
 
@@ -50,6 +52,8 @@ class UserController extends Controller
 
     public function destroy(User $user): JsonResponse
     {
+        abort_if($user->role !== request()->user()->role->manageableRole(), 403);
+
         $this->userService->delete($user);
 
         return response()->json(null, 204);

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\Role;
 use App\Models\Farmer;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -32,9 +34,13 @@ class FarmerService
         $farmer->delete();
     }
 
-    public function outstandingDebts(Farmer $farmer): Collection
+    public function outstandingDebts(Farmer $farmer, ?User $viewer = null): Collection
     {
         return $farmer->debts()
+            ->when(
+                $viewer?->role === Role::Operator,
+                fn ($q) => $q->whereHas('transaction', fn ($q2) => $q2->where('operator_id', $viewer->id))
+            )
             ->where('remaining_amount', '>', 0)
             ->orderBy('created_at', 'asc')
             ->get();

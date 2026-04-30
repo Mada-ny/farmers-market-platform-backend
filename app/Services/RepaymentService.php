@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\Role;
 use App\Exceptions\NoOutstandingDebtException;
 use App\Models\Debt;
 use App\Models\Farmer;
@@ -15,10 +16,11 @@ use Illuminate\Support\Facades\DB;
 
 class RepaymentService
 {
-    public function list(array $filters = []): LengthAwarePaginator
+    public function list(array $filters = [], ?User $viewer = null): LengthAwarePaginator
     {
         return Repayment::with(['farmer' => fn ($q) => $q->withOutstandingDebt(), 'operator'])
             ->latest()
+            ->when($viewer?->role === Role::Operator, fn ($q) => $q->where('operator_id', $viewer->id))
             ->when(isset($filters['farmer_id']), fn ($q) => $q->where('farmer_id', $filters['farmer_id']))
             ->paginate($filters['per_page'] ?? 15);
     }

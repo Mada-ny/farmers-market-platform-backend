@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Repayment\IndexRepaymentRequest;
 use App\Http\Requests\Repayment\StoreRepaymentRequest;
@@ -22,12 +23,17 @@ class RepaymentController extends Controller
     public function index(IndexRepaymentRequest $request): AnonymousResourceCollection
     {
         return RepaymentResource::collection(
-            $this->repaymentService->list($request->validated())
+            $this->repaymentService->list($request->validated(), $request->user())
         );
     }
 
     public function show(Repayment $repayment): RepaymentResource
     {
+        abort_if(
+            request()->user()->role === Role::Operator && $repayment->operator_id !== request()->user()->id,
+            403
+        );
+
         $repayment->load(['farmer', 'operator', 'debts']);
         $repayment->farmer->loadOutstandingDebt();
 

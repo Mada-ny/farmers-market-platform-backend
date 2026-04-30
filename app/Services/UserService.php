@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public function list(array $filters = []): LengthAwarePaginator
+    public function list(array $filters = [], ?User $viewer = null): LengthAwarePaginator
     {
-        return User::paginate($filters['per_page'] ?? 15);
+        return User::when(
+            $viewer !== null,
+            fn ($q) => $q->where('role', $viewer->role->manageableRole())
+        )->paginate($filters['per_page'] ?? 15);
     }
 
     public function create(array $data): User
