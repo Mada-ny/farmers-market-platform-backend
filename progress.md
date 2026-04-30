@@ -79,15 +79,20 @@
 
 ### Quality
 
-- [x] 55 feature tests (auth, role enforcement, FIFO, partial repayment, credit limit, cascade, pagination, filters, farmer insights, repayment history, interest rate config)
+- [x] 57 feature tests (auth, role enforcement, FIFO, partial repayment, credit limit, cascade, pagination, filters, farmer insights, repayment history, interest rate config, operator scoping)
 - [x] Realistic seeders (3 users, 33 categories, 26 products, 15 Ivorian farmers)
 - [x] Postman collection (`postman_collection.json`) — all endpoints including repayment history
 
 ---
 
-## To Do
-
 ### Security Hardening
 
-- [ ] Scope `GET /api/v1/transactions` to the authenticated operator's own transactions
-- [ ] Prevent an operator from creating a transaction for a farmer that belongs to another operator's zone (if applicable)
+- [x] `GET /api/v1/transactions` scoped to the authenticated operator's own transactions
+
+---
+
+## To Do
+
+### Future Considerations
+
+- [ ] Operator-zone scoping for farmers (no schema support currently — revisit if multi-zone operators are needed)
