@@ -79,15 +79,23 @@
 
 ### Quality
 
-- [x] 55 feature tests (auth, role enforcement, FIFO, partial repayment, credit limit, cascade, pagination, filters, farmer insights, repayment history, interest rate config)
+- [x] 67 feature tests (auth, role enforcement, FIFO, partial repayment, credit limit, cascade, pagination, filters, farmer insights, repayment history, interest rate config, visibility scoping)
 - [x] Realistic seeders (3 users, 33 categories, 26 products, 15 Ivorian farmers)
 - [x] Postman collection (`postman_collection.json`) — all endpoints including repayment history
+
+### Security & Visibility
+
+- [x] Role hierarchy enforced on user management (admin → supervisors only, supervisor → operators only)
+- [x] `GET /api/v1/transactions` scoped to operator's own transactions; supervisors see all
+- [x] `GET /api/v1/repayments` scoped to operator's own repayments; supervisors see all
+- [x] `GET /api/v1/farmers/{id}/debts` scoped to operator's own transactions' debts; supervisors see all
+- [x] Operators can read products & categories (required for transaction entry)
+- [x] Precise 404 messages — "Transaction not found." instead of generic "Route not found."
 
 ---
 
 ## To Do
 
-### Security Hardening
+### Future Considerations
 
-- [ ] Scope `GET /api/v1/transactions` to the authenticated operator's own transactions
-- [ ] Prevent an operator from creating a transaction for a farmer that belongs to another operator's zone (if applicable)
+- [ ] Operator-zone scoping for farmers (no schema support — revisit if multi-zone operators are needed)
