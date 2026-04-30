@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Farmer;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class FarmerService
 {
