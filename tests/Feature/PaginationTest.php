@@ -46,7 +46,7 @@ class PaginationTest extends TestCase
 
     public function test_users_per_page_param_is_respected(): void
     {
-        User::factory()->count(10)->admin()->create();
+        User::factory()->count(10)->supervisor()->create();
 
         $response = $this->actingAs($this->admin)
             ->getJson('/api/v1/users?per_page=3')
