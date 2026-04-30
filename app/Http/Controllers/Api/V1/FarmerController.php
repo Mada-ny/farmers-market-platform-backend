@@ -65,9 +65,6 @@ class FarmerController extends Controller
 
     private function loadDebtSummary(Farmer $farmer): Farmer
     {
-        return $farmer->loadSum(
-            ['debts as outstanding_debt' => fn ($q) => $q->where('remaining_amount', '>', 0)],
-            'remaining_amount'
-        );
+        return $farmer->loadOutstandingDebt();
     }
 }

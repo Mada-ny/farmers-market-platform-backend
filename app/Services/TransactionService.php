@@ -17,7 +17,7 @@ class TransactionService
 {
     public function list(array $filters = []): LengthAwarePaginator
     {
-        return Transaction::with(['farmer', 'operator'])
+        return Transaction::with(['farmer' => fn ($q) => $q->withOutstandingDebt(), 'operator'])
             ->latest()
             ->when(isset($filters['farmer_id']), fn ($q) => $q->where('farmer_id', $filters['farmer_id']))
             ->when(isset($filters['payment_method']), fn ($q) => $q->where('payment_method', $filters['payment_method']))
@@ -74,10 +74,7 @@ class TransactionService
 
             $transaction->load(['farmer', 'operator', 'items.product', 'debt']);
 
-            $transaction->farmer->loadSum(
-                ['debts as outstanding_debt' => fn ($q) => $q->where('remaining_amount', '>', 0)],
-                'remaining_amount'
-            );
+            $transaction->farmer->loadOutstandingDebt();
 
             return $transaction;
         });

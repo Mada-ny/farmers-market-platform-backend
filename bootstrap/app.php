@@ -65,6 +65,17 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (NotFoundHttpException $e, Request $request): JsonResponse {
+            $previous = $e->getPrevious();
+
+            if ($previous instanceof ModelNotFoundException) {
+                $model = class_basename($previous->getModel());
+
+                return response()->json([
+                    'success' => false,
+                    'message' => "{$model} not found.",
+                ], 404);
+            }
+
             return response()->json([
                 'success' => false,
                 'message' => 'Route not found.',
