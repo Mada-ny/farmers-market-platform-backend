@@ -100,7 +100,7 @@
 
 - [x] Farmer search by `identifier` or `phone` on `GET /api/v1/farmers`
 - [x] README.md — replace default Laravel boilerplate with project setup instructions, seeded credentials, and Postman reference
-- [ ] Unit price sourced from product catalog in `TransactionService`, not trusted from client payload (business logic correctness)
+- [x] Unit price sourced from product catalog in `TransactionService`, not trusted from client payload (business logic correctness)
 - [ ] Document `interest_rate` convention (send `0.3` for 30%) in Postman collection and validation message
 
 ### Future Considerations
