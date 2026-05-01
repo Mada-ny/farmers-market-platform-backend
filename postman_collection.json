@@ -429,7 +429,7 @@
             "body": {
               "mode": "raw",
               "options": { "raw": { "language": "json" } },
-              "raw": "{\n  \"farmer_id\": 1,\n  \"payment_method\": \"cash\",\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity\": 2,\n      \"unit_price\": 7500\n    },\n    {\n      \"product_id\": 3,\n      \"quantity\": 1,\n      \"unit_price\": 5500\n    }\n  ]\n}"
+              "raw": "{\n  \"farmer_id\": 1,\n  \"payment_method\": \"cash\",\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity\": 2\n    },\n    {\n      \"product_id\": 3,\n      \"quantity\": 1\n    }\n  ]\n}"
             }
           }
         },
@@ -446,7 +446,7 @@
             "body": {
               "mode": "raw",
               "options": { "raw": { "language": "json" } },
-              "raw": "{\n  \"farmer_id\": 2,\n  \"payment_method\": \"credit\",\n  \"interest_rate\": 0.10,\n  \"items\": [\n    {\n      \"product_id\": 5,\n      \"quantity\": 3,\n      \"unit_price\": 3500\n    }\n  ]\n}"
+              "raw": "{\n  \"farmer_id\": 2,\n  \"payment_method\": \"credit\",\n  \"interest_rate\": 0.10,\n  \"items\": [\n    {\n      \"product_id\": 5,\n      \"quantity\": 3\n    }\n  ]\n}"
             }
           }
         },
