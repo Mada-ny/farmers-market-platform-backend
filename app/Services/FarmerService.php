@@ -14,7 +14,13 @@ class FarmerService
 {
     public function list(array $filters = []): LengthAwarePaginator
     {
-        return Farmer::withOutstandingDebt()->paginate($filters['per_page'] ?? 15);
+        return Farmer::withOutstandingDebt()
+            ->when(
+                isset($filters['search']),
+                fn ($q) => $q->where('identifier', $filters['search'])
+                    ->orWhere('phone', $filters['search'])
+            )
+            ->paginate($filters['per_page'] ?? 15);
     }
 
     public function create(array $data): Farmer
