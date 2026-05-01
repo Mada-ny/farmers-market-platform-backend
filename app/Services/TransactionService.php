@@ -46,7 +46,8 @@ class TransactionService
             $creditedAmount = null;
 
             if ($data['payment_method'] === PaymentMethod::Credit->value) {
-                $interestRate = $data['interest_rate'] ?? config('business.interest_rate');
+                $rateStored = $data['interest_rate'] ?? config('business.interest_rate');
+                $interestRate = $rateStored / 100;
                 $creditedAmount = $totalFcfa * (1 + $interestRate);
 
                 $this->enforceCreditLimit($farmer, $creditedAmount);
@@ -57,7 +58,7 @@ class TransactionService
                 'operator_id' => $operator->id,
                 'total_fcfa' => $totalFcfa,
                 'payment_method' => $data['payment_method'],
-                'interest_rate' => $interestRate,
+                'interest_rate' => $rateStored ?? null,
                 'credited_amount' => $creditedAmount,
             ]);
 

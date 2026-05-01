@@ -58,7 +58,7 @@ class TransactionTest extends TestCase
         $response = $this->actingAs($this->operator)
             ->postJson('/api/v1/transactions', $this->payload([
                 'payment_method' => 'credit',
-                'interest_rate' => 0.10,
+                'interest_rate' => 10,
             ]));
 
         $response->assertStatus(201);
@@ -80,7 +80,7 @@ class TransactionTest extends TestCase
             ->postJson('/api/v1/transactions', $this->payload([
                 'farmer_id' => $farmer->id,
                 'payment_method' => 'credit',
-                'interest_rate' => 0.10,
+                'interest_rate' => 10,
             ]));
 
         // credited_amount = 2000 × 1.10 = 2200 > credit_limit 1000
@@ -98,7 +98,7 @@ class TransactionTest extends TestCase
             ->postJson('/api/v1/transactions', $this->payload([
                 'farmer_id' => $farmer->id,
                 'payment_method' => 'credit',
-                'interest_rate' => 0.10,
+                'interest_rate' => 10,
             ]));
 
         $response->assertStatus(201);
@@ -110,7 +110,7 @@ class TransactionTest extends TestCase
         $response = $this->actingAs($this->operator)
             ->postJson('/api/v1/transactions', $this->payload([
                 'payment_method' => 'credit',
-                'interest_rate' => 0.10,
+                'interest_rate' => 10,
             ]));
 
         $response->assertStatus(201)
@@ -120,7 +120,7 @@ class TransactionTest extends TestCase
 
     public function test_credit_transaction_without_interest_rate_uses_config_default(): void
     {
-        config(['business.interest_rate' => 0.15]);
+        config(['business.interest_rate' => 15]);
 
         $response = $this->actingAs($this->operator)
             ->postJson('/api/v1/transactions', $this->payload([
@@ -130,25 +130,25 @@ class TransactionTest extends TestCase
         $response->assertStatus(201);
 
         $this->assertDatabaseHas('transactions', [
-            'interest_rate' => 0.15,
+            'interest_rate' => 15,
             'credited_amount' => 2300.00, // 2000 × 1.15
         ]);
     }
 
     public function test_credit_transaction_with_explicit_interest_rate_overrides_default(): void
     {
-        config(['business.interest_rate' => 0.15]);
+        config(['business.interest_rate' => 15]);
 
         $response = $this->actingAs($this->operator)
             ->postJson('/api/v1/transactions', $this->payload([
                 'payment_method' => 'credit',
-                'interest_rate' => 0.20,
+                'interest_rate' => 20,
             ]));
 
         $response->assertStatus(201);
 
         $this->assertDatabaseHas('transactions', [
-            'interest_rate' => 0.20,
+            'interest_rate' => 20,
             'credited_amount' => 2400.00, // 2000 × 1.20
         ]);
     }
