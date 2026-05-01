@@ -103,6 +103,46 @@ class FarmerTest extends TestCase
         $this->assertEquals(150_000.0, $farmerData['available_credit']);
     }
 
+    public function test_operator_can_search_farmer_by_identifier(): void
+    {
+        $operator = User::factory()->operator()->create();
+        $target = Farmer::factory()->create(['identifier' => 'CI-ABJ-99999']);
+        Farmer::factory()->create(['identifier' => 'CI-YAM-00001']);
+
+        $response = $this->actingAs($operator)
+            ->getJson('/api/v1/farmers?search=CI-ABJ-99999')
+            ->assertStatus(200);
+
+        $this->assertCount(1, $response->json('data'));
+        $this->assertEquals('CI-ABJ-99999', $response->json('data.0.identifier'));
+    }
+
+    public function test_operator_can_search_farmer_by_phone(): void
+    {
+        $operator = User::factory()->operator()->create();
+        $target = Farmer::factory()->create(['phone' => '+2250799999999']);
+        Farmer::factory()->create(['phone' => '+2250700000001']);
+
+        $response = $this->actingAs($operator)
+            ->getJson('/api/v1/farmers?search=%2B2250799999999')
+            ->assertStatus(200);
+
+        $this->assertCount(1, $response->json('data'));
+        $this->assertEquals('+2250799999999', $response->json('data.0.phone'));
+    }
+
+    public function test_farmer_search_returns_empty_when_no_match(): void
+    {
+        $operator = User::factory()->operator()->create();
+        Farmer::factory()->create();
+
+        $response = $this->actingAs($operator)
+            ->getJson('/api/v1/farmers?search=NONEXISTENT')
+            ->assertStatus(200);
+
+        $this->assertCount(0, $response->json('data'));
+    }
+
     public function test_settled_debts_are_excluded_from_outstanding_debt(): void
     {
         $operator = User::factory()->operator()->create();

@@ -101,7 +101,7 @@
 - [x] Farmer search by `identifier` or `phone` on `GET /api/v1/farmers`
 - [x] README.md — replace default Laravel boilerplate with project setup instructions, seeded credentials, and Postman reference
 - [x] Unit price sourced from product catalog in `TransactionService`, not trusted from client payload (business logic correctness)
-- [x] `interest_rate` convention — API accepts/returns percentages (e.g. `10` for 10%); config and calculations remain decimal internally
+- [x] `interest_rate` convention — API accepts/returns percentages (e.g. `10` for 10%); stored as percentage, divided by 100 only for calculations
 
 ### Future Considerations
 

@@ -17,6 +17,7 @@ class IndexFarmerRequest extends FormRequest
     {
         return [
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
+            'search' => ['sometimes', 'string', 'max:255'],
         ];
     }
 }

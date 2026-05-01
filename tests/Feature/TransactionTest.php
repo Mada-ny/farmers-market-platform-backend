@@ -38,7 +38,6 @@ class TransactionTest extends TestCase
                 [
                     'product_id' => $this->product->id,
                     'quantity' => 2,
-                    'unit_price' => 1000,
                 ],
             ],
         ], $overrides);
@@ -82,13 +81,6 @@ class TransactionTest extends TestCase
                 'farmer_id' => $farmer->id,
                 'payment_method' => 'credit',
                 'interest_rate' => 10,
-                'items' => [
-                    [
-                        'product_id' => $this->product->id,
-                        'quantity' => 2,
-                        'unit_price' => 1000,
-                    ],
-                ],
             ]));
 
         // credited_amount = 2000 × 1.10 = 2200 > credit_limit 1000
@@ -159,5 +151,26 @@ class TransactionTest extends TestCase
             'interest_rate' => 20,
             'credited_amount' => 2400.00, // 2000 × 1.20
         ]);
+    }
+
+    public function test_transaction_uses_product_catalog_price_not_client_supplied(): void
+    {
+        // product was created with price 1000 in setUp
+        $response = $this->actingAs($this->operator)
+            ->postJson('/api/v1/transactions', [
+                'farmer_id' => $this->farmer->id,
+                'payment_method' => 'cash',
+                'items' => [['product_id' => $this->product->id, 'quantity' => 3]],
+            ]);
+
+        $response->assertStatus(201);
+
+        $this->assertDatabaseHas('transaction_items', [
+            'product_id' => $this->product->id,
+            'quantity' => 3,
+            'unit_price' => 1000.00,
+        ]);
+
+        $this->assertDatabaseHas('transactions', ['total_fcfa' => 3000.00]);
     }
 }

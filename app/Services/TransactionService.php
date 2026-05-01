@@ -9,6 +9,7 @@ use App\Enums\Role;
 use App\Exceptions\CreditLimitExceededException;
 use App\Models\Debt;
 use App\Models\Farmer;
+use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -34,8 +35,11 @@ class TransactionService
             $farmer = Farmer::findOrFail($data['farmer_id']);
             $items = $data['items'];
 
+            $catalogPrices = Product::whereIn('id', collect($items)->pluck('product_id'))
+                ->pluck('price', 'id');
+
             $totalFcfa = collect($items)->sum(
-                fn (array $item) => $item['quantity'] * $item['unit_price']
+                fn (array $item) => $item['quantity'] * (float) $catalogPrices[$item['product_id']]
             );
 
             $interestRate = null;
@@ -62,7 +66,7 @@ class TransactionService
                 $transaction->items()->create([
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
-                    'unit_price' => $item['unit_price'],
+                    'unit_price' => (float) $catalogPrices[$item['product_id']],
                 ]);
             }
 
