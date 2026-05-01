@@ -82,7 +82,7 @@ class RepaymentSeeder extends Seeder
         User $operator,
         array $productIds,
         array $lines,
-        float $rate = 0.10
+        float $rate = 10
     ): Debt {
         $total = 0.0;
 
@@ -90,7 +90,7 @@ class RepaymentSeeder extends Seeder
             $total += $qty * $price;
         }
 
-        $creditedAmount = round($total * (1 + $rate), 2);
+        $creditedAmount = round($total * (1 + $rate / 100), 2);
 
         $transaction = Transaction::create([
             'farmer_id' => $farmer->id,

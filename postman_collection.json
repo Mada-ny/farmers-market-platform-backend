@@ -437,7 +437,7 @@
           "request": {
             "method": "POST",
             "url": "{{base_url}}/transactions",
-            "description": "interest_rate is optional. Omit it to use the server default (DEFAULT_INTEREST_RATE env, currently 0.10 = 10%). Provide it to override per-transaction.",
+            "description": "interest_rate is a percentage (e.g. send 10 for 10%, 5.35 for 5.35%). Omit it to use the server default (DEFAULT_INTEREST_RATE env, currently 10%). Provide it to override per-transaction.",
             "header": [
               { "key": "Accept",        "value": "application/json" },
               { "key": "Authorization", "value": "Bearer {{token}}" }
@@ -445,7 +445,7 @@
             "body": {
               "mode": "raw",
               "options": { "raw": { "language": "json" } },
-              "raw": "{\n  \"farmer_id\": 2,\n  \"payment_method\": \"credit\",\n  \"interest_rate\": 0.10,\n  \"items\": [\n    {\n      \"product_id\": 5,\n      \"quantity\": 3,\n      \"unit_price\": 3500\n    }\n  ]\n}"
+              "raw": "{\n  \"farmer_id\": 2,\n  \"payment_method\": \"credit\",\n  \"interest_rate\": 10,\n  \"items\": [\n    {\n      \"product_id\": 5,\n      \"quantity\": 3,\n      \"unit_price\": 3500\n    }\n  ]\n}"
             }
           }
         },

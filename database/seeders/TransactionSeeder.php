@@ -106,7 +106,7 @@ class TransactionSeeder extends Seeder
         $this->makeTransaction($farmer, $operator, $lines, PaymentMethod::Cash);
     }
 
-    private function credit(Farmer $farmer, User $operator, array $lines, float $rate = 0.10): void
+    private function credit(Farmer $farmer, User $operator, array $lines, float $rate = 10): void
     {
         $this->makeTransaction($farmer, $operator, $lines, PaymentMethod::Credit, $rate);
     }
@@ -116,7 +116,7 @@ class TransactionSeeder extends Seeder
         User $operator,
         array $lines,
         PaymentMethod $method,
-        float $interestRate = 0.10
+        float $interestRate = 10
     ): void {
         $total = 0.0;
 
@@ -129,7 +129,7 @@ class TransactionSeeder extends Seeder
 
         if ($method === PaymentMethod::Credit) {
             $storedRate = $interestRate;
-            $creditedAmount = round($total * (1 + $interestRate), 2);
+            $creditedAmount = round($total * (1 + $interestRate / 100), 2);
         }
 
         $transaction = Transaction::create([
