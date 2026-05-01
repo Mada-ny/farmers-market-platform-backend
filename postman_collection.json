@@ -313,6 +313,7 @@
               "host": ["{{base_url}}"],
               "path": ["farmers"],
               "query": [
+                { "key": "search",   "value": "",   "disabled": true, "description": "Exact match on identifier or phone number (e.g. CI-ABJ-00001 or +2250701234567)" },
                 { "key": "per_page", "value": "15", "disabled": true, "description": "Items per page (1–100, default: 15)" },
                 { "key": "page",     "value": "1",  "disabled": true, "description": "Page number" }
               ]
