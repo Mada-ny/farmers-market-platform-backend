@@ -30,24 +30,24 @@ class RepaymentSeeder extends Seeder
 
         // Three credit transactions → three debts in ascending age order
         $this->makeCreditTransactionWithDebt($farmer, $operator, $productIds, [
-            ['Cacao fermenté séché (sac 60 kg)', 1, 90000],
-        ]); // Debt A: credited_amount = 99 000
+            ['Power Sprayer (20L)', 1, 45000],
+        ]); // Debt A: credited_amount = 49 500
 
         $this->makeCreditTransactionWithDebt($farmer, $operator, $productIds, [
-            ['Café robusta (sac 60 kg)', 2, 75000],
-        ]); // Debt B: credited_amount = 165 000
+            ['Water Pump (2HP)', 2, 55000],
+        ]); // Debt B: credited_amount = 121 000
 
         $this->makeCreditTransactionWithDebt($farmer, $operator, $productIds, [
-            ['Noix de cajou brutes (sac 80 kg)', 3, 56000],
-        ]); // Debt C: credited_amount = 184 800
+            ['NPK 15-15-15 (50kg)', 3, 20000],
+        ]); // Debt C: credited_amount = 66 000
 
-        // Repayment 1 — fully settles Debt A (150 kg × 660 = 99 000)
+        // Repayment 1 — fully settles Debt A (75 kg × 660 = 49 500)
         $rep1 = Repayment::create([
             'farmer_id' => $farmer->id,
             'operator_id' => $operator->id,
-            'kg_received' => 150,
+            'kg_received' => 75,
             'commodity_rate' => 660,
-            'fcfa_value' => 99000,
+            'fcfa_value' => 49500,
         ]);
         $this->applyFifo($rep1, $farmer);
 
@@ -61,20 +61,20 @@ class RepaymentSeeder extends Seeder
         ]);
         $this->applyFifo($rep2, $farmer);
 
-        // Repayment 3 — further reduces Debt B (120 kg × 660 = 79 200)
+        // Repayment 3 — further reduces Debt B (82.73 kg × 660 ≈ 54 600)
         $rep3 = Repayment::create([
             'farmer_id' => $farmer->id,
             'operator_id' => $operator->id,
-            'kg_received' => 120,
+            'kg_received' => 82.73,
             'commodity_rate' => 660,
-            'fcfa_value' => 79200,
+            'fcfa_value' => 54600,
         ]);
         $this->applyFifo($rep3, $farmer);
 
         // Final debt states:
         // Debt A → remaining_amount = 0       (fully settled)
-        // Debt B → remaining_amount = 19 800  (partially open)
-        // Debt C → remaining_amount = 184 800 (untouched)
+        // Debt B → remaining_amount = 400     (partially open - 121000 - 66000 - 54600 = 400)
+        // Debt C → remaining_amount = 66 000  (untouched)
     }
 
     private function makeCreditTransactionWithDebt(

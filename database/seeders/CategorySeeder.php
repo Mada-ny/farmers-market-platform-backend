@@ -11,41 +11,34 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        $cereales = Category::create(['name' => 'Céréales']);
-        Category::create(['name' => 'Maïs',        'parent_id' => $cereales->id]);
-        Category::create(['name' => 'Riz local',    'parent_id' => $cereales->id]);
-        Category::create(['name' => 'Mil',          'parent_id' => $cereales->id]);
-        Category::create(['name' => 'Sorgho',       'parent_id' => $cereales->id]);
+        $pesticides = Category::create(['name' => 'Pesticides']);
+        Category::create(['name' => 'Herbicides', 'parent_id' => $pesticides->id]);
+        Category::create(['name' => 'Insecticides', 'parent_id' => $pesticides->id]);
+        Category::create(['name' => 'Fungicides', 'parent_id' => $pesticides->id]);
+        Category::create(['name' => 'Rodenticides', 'parent_id' => $pesticides->id]);
 
-        $tubercules = Category::create(['name' => 'Tubercules et racines']);
-        Category::create(['name' => 'Igname',       'parent_id' => $tubercules->id]);
-        Category::create(['name' => 'Manioc',       'parent_id' => $tubercules->id]);
-        Category::create(['name' => 'Patate douce', 'parent_id' => $tubercules->id]);
-        Category::create(['name' => 'Taro',         'parent_id' => $tubercules->id]);
+        $fertilizers = Category::create(['name' => 'Fertilizers']);
+        Category::create(['name' => 'Nitrogen Fertilizers', 'parent_id' => $fertilizers->id]);
+        Category::create(['name' => 'Phosphorus Fertilizers', 'parent_id' => $fertilizers->id]);
+        Category::create(['name' => 'Potassium Fertilizers', 'parent_id' => $fertilizers->id]);
+        Category::create(['name' => 'Compound Fertilizers', 'parent_id' => $fertilizers->id]);
+        Category::create(['name' => 'Organic Fertilizers', 'parent_id' => $fertilizers->id]);
 
-        $legumes = Category::create(['name' => 'Légumes']);
-        Category::create(['name' => 'Tomate',       'parent_id' => $legumes->id]);
-        Category::create(['name' => 'Gombo',        'parent_id' => $legumes->id]);
-        Category::create(['name' => 'Aubergine',    'parent_id' => $legumes->id]);
-        Category::create(['name' => 'Piment',       'parent_id' => $legumes->id]);
-        Category::create(['name' => 'Oignon',       'parent_id' => $legumes->id]);
+        $seeds = Category::create(['name' => 'Seeds']);
+        Category::create(['name' => 'Cereal Seeds', 'parent_id' => $seeds->id]);
+        Category::create(['name' => 'Vegetable Seeds', 'parent_id' => $seeds->id]);
+        Category::create(['name' => 'Legume Seeds', 'parent_id' => $seeds->id]);
+        Category::create(['name' => 'Fruit Seeds', 'parent_id' => $seeds->id]);
 
-        $fruits = Category::create(['name' => 'Fruits']);
-        Category::create(['name' => 'Plantain',     'parent_id' => $fruits->id]);
-        Category::create(['name' => 'Banane douce', 'parent_id' => $fruits->id]);
-        Category::create(['name' => 'Ananas',       'parent_id' => $fruits->id]);
-        Category::create(['name' => 'Papaye',       'parent_id' => $fruits->id]);
-        Category::create(['name' => 'Mangue',       'parent_id' => $fruits->id]);
+        $tools = Category::create(['name' => 'Farm Tools']);
+        Category::create(['name' => 'Hand Tools', 'parent_id' => $tools->id]);
+        Category::create(['name' => 'Power Tools', 'parent_id' => $tools->id]);
+        Category::create(['name' => 'Irrigation Equipment', 'parent_id' => $tools->id]);
 
-        $rente = Category::create(['name' => 'Cultures de rente']);
-        Category::create(['name' => 'Cacao',        'parent_id' => $rente->id]);
-        Category::create(['name' => 'Café',         'parent_id' => $rente->id]);
-        Category::create(['name' => 'Anacarde',     'parent_id' => $rente->id]);
-        Category::create(['name' => 'Hévéa',        'parent_id' => $rente->id]);
-
-        $legumineuses = Category::create(['name' => 'Légumineuses']);
-        Category::create(['name' => 'Arachide',     'parent_id' => $legumineuses->id]);
-        Category::create(['name' => 'Niébé',        'parent_id' => $legumineuses->id]);
-        Category::create(['name' => 'Soja',         'parent_id' => $legumineuses->id]);
+        $equipment = Category::create(['name' => 'Protective Equipment']);
+        Category::create(['name' => 'Gloves', 'parent_id' => $equipment->id]);
+        Category::create(['name' => 'Masks', 'parent_id' => $equipment->id]);
+        Category::create(['name' => 'Safety Glasses', 'parent_id' => $equipment->id]);
+        Category::create(['name' => 'Protective Clothing', 'parent_id' => $equipment->id]);
     }
 }

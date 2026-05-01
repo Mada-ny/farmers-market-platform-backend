@@ -31,73 +31,73 @@ class TransactionSeeder extends Seeder
         // CI-ABJ-00001
         $f1 = $farmers['CI-ABJ-00001'];
         $this->cash($f1, $operator, [
-            ['Maïs blanc (sac 50 kg)', 4, 7500],
-            ['Tomate locale (caisse 5 kg)', 2, 2000],
+            ['Glyphosate Herbicide (1L)', 4, 2500],
+            ['Urea Fertilizer (50kg)', 2, 12000],
         ]);
         $this->cash($f1, $operator, [
-            ['Igname Kponan (tas 10 kg)', 3, 3500],
-            ['Gombo frais (botte 1 kg)', 5, 600],
+            ['Hybrid Maize Seeds (5kg)', 3, 15000],
+            ['Agricultural Hoe', 5, 2500],
         ]);
         $this->credit($f1, $operator, [
-            ['Noix de cajou brutes (sac 80 kg)', 2, 56000],
+            ['Power Sprayer (20L)', 2, 45000],
         ]);
 
         // CI-ABJ-00002
         $f2 = $farmers['CI-ABJ-00002'];
         $this->cash($f2, $operator, [
-            ['Manioc doux (tas 10 kg)', 6, 1200],
-            ['Régime de plantain (environ 15 kg)', 4, 2500],
+            ['NPK 15-15-15 (50kg)', 6, 20000],
+            ['Pyrethroid Insecticide (1L)', 4, 3200],
         ]);
         $this->cash($f2, $operator, [
-            ['Patate douce orange (sac 25 kg)', 2, 4500],
-            ['Aubergine locale (kg)', 8, 350],
+            ['Tomato Seeds (500g)', 2, 5000],
+            ['Hand Sprayer (5L)', 8, 3500],
         ]);
         $this->credit($f2, $operator, [
-            ['Cacao fermenté séché (sac 60 kg)', 1, 90000],
+            ['Water Pump (2HP)', 1, 55000],
         ]);
 
         // CI-YAM-00003
         $f3 = $farmers['CI-YAM-00003'];
         $this->cash($f3, $operator, [
-            ['Riz paddy local (sac 50 kg)', 3, 14000],
-            ['Oignon rouge (filet 10 kg)', 2, 3000],
+            ['Ammonium Nitrate (50kg)', 3, 15000],
+            ['Chemical Resistant Gloves', 2, 800],
         ]);
         $this->cash($f3, $operator, [
-            ['Ananas Pain de sucre (pièce)', 10, 400],
-            ['Banane douce (régime 10 kg)', 5, 1800],
+            ['Mancozeb Fungicide (1kg)', 10, 2200],
+            ['Improved Rice Seeds (10kg)', 5, 25000],
         ]);
         $this->credit($f3, $operator, [
-            ['Café robusta (sac 60 kg)', 2, 75000],
+            ['NPK 20-10-10 (50kg)', 2, 22000],
         ]);
 
         // CI-YAM-00004
         $f4 = $farmers['CI-YAM-00004'];
         $this->cash($f4, $operator, [
-            ['Mil en grains (sac 25 kg)', 5, 5500],
-            ['Piment fort (botte 500 g)', 4, 500],
+            ['Calcium Nitrate (50kg)', 5, 18000],
+            ['N95 Respirator Mask', 4, 1200],
         ]);
         $this->cash($f4, $operator, [
-            ['Taro (colocase) 10 kg', 3, 2500],
-            ['Papaye (pièce 1–2 kg)', 6, 350],
+            ['Single Super Phosphate (50kg)', 3, 10000],
+            ['Safety Glasses', 6, 1500],
         ]);
         $this->credit($f4, $operator, [
-            ['Arachide décortiquée (sac 50 kg)', 1, 35000],
-            ['Niébé blanc (sac 25 kg)', 1, 15000],
+            ['Muriate of Potash (50kg)', 1, 14000],
+            ['Composted Manure (50kg)', 1, 3000],
         ]);
 
         // CI-KOR-00005
         $f5 = $farmers['CI-KOR-00005'];
         $this->cash($f5, $operator, [
-            ['Soja graine (sac 50 kg)', 2, 22000],
-            ['Igname Florido (tas 10 kg)', 3, 2800],
+            ['Sulfate of Potash (50kg)', 2, 17000],
+            ['Bean Seeds (5kg)', 3, 10000],
         ]);
         $this->cash($f5, $operator, [
-            ['Mangue Kent (kg)', 4, 300],
-            ['Gombo frais (botte 1 kg)', 5, 600],
+            ['Protective Coverall', 4, 3500],
+            ['Machete', 5, 1800],
         ]);
         $this->credit($f5, $operator, [
-            ['Noix de cajou brutes (sac 80 kg)', 1, 56000],
-            ['Arachide décortiquée (sac 50 kg)', 1, 35000],
+            ['Triple Super Phosphate (50kg)', 1, 16000],
+            ['Soybean Seeds (10kg)', 1, 18000],
         ]);
     }
 
