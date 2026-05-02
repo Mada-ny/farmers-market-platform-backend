@@ -19,7 +19,7 @@ class StoreFarmerRequest extends FormRequest
             'identifier' => ['required', 'string', 'unique:farmers,identifier'],
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'unique:farmers,phone'],
+            'phone' => ['required', 'string', 'unique:farmers,phone', 'regex:/^\+225\d{10}$/'],
             'credit_limit' => ['required', 'numeric', 'min:0'],
         ];
     }

@@ -166,4 +166,78 @@ class FarmerTest extends TestCase
             ->assertJsonPath('data.outstanding_debt', 0)
             ->assertJsonPath('data.available_credit', 500_000);
     }
+
+    public function test_farmer_creation_fails_with_invalid_phone_format(): void
+    {
+        $operator = User::factory()->operator()->create();
+
+        $response = $this->actingAs($operator)->postJson('/api/v1/farmers', [
+            'identifier' => 'FARM-0001',
+            'firstname' => 'Kouassi',
+            'lastname' => 'Yao',
+            'phone' => '2250700000001', // Missing + prefix
+            'credit_limit' => 300000,
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['phone']);
+    }
+
+    public function test_farmer_creation_fails_with_wrong_country_code(): void
+    {
+        $operator = User::factory()->operator()->create();
+
+        $response = $this->actingAs($operator)->postJson('/api/v1/farmers', [
+            'identifier' => 'FARM-0001',
+            'firstname' => 'Kouassi',
+            'lastname' => 'Yao',
+            'phone' => '+2240700000001', // Wrong country code (Guinea instead of Côte d'Ivoire)
+            'credit_limit' => 300000,
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['phone']);
+    }
+
+    public function test_farmer_creation_fails_with_insufficient_digits(): void
+    {
+        $operator = User::factory()->operator()->create();
+
+        $response = $this->actingAs($operator)->postJson('/api/v1/farmers', [
+            'identifier' => 'FARM-0001',
+            'firstname' => 'Kouassi',
+            'lastname' => 'Yao',
+            'phone' => '+225070000001', // Only 12 characters instead of 13
+            'credit_limit' => 300000,
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['phone']);
+    }
+
+    public function test_farmer_update_fails_with_invalid_phone_format(): void
+    {
+        $operator = User::factory()->operator()->create();
+        $farmer = Farmer::factory()->create(['phone' => '+2250700000001']);
+
+        $response = $this->actingAs($operator)->putJson("/api/v1/farmers/{$farmer->id}", [
+            'phone' => '07000000002', // Missing +225 prefix
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['phone']);
+    }
+
+    public function test_farmer_update_succeeds_with_same_valid_phone(): void
+    {
+        $operator = User::factory()->operator()->create();
+        $farmer = Farmer::factory()->create(['phone' => '+2250700000001']);
+
+        $response = $this->actingAs($operator)->putJson("/api/v1/farmers/{$farmer->id}", [
+            'phone' => '+2250700000001', // Same phone number
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJsonPath('data.phone', '+2250700000001');
+    }
 }
