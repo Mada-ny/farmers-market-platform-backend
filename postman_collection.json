@@ -977,7 +977,7 @@
             "body": {
               "mode": "raw",
               "options": { "raw": { "language": "json" } },
-              "raw": "{\n  \"identifier\": \"CI-ABJ-00016\",\n  \"firstname\": \"Adjobi\",\n  \"lastname\": \"Kra Kouamé\",\n  \"phone\": \"+2250701234516\",\n  \"credit_limit\": 400000\n}"
+              "raw": "{\n  \"identifier\": \"CI-ABJ-00016\",\n  \"firstname\": \"Adjobi Kra\",\n  \"lastname\": \"Kouamé\",\n  \"phone\": \"+2250701234516\",\n  \"credit_limit\": 400000\n}"
             }
           },
           "response": [
@@ -993,7 +993,7 @@
                 "body": {
                   "mode": "raw",
                   "options": { "raw": { "language": "json" } },
-                  "raw": "{\n  \"identifier\": \"CI-ABJ-00016\",\n  \"firstname\": \"Adjobi\",\n  \"lastname\": \"Kra Kouamé\",\n  \"phone\": \"+2250701234516\",\n  \"credit_limit\": 400000\n}"
+                  "raw": "{\n  \"identifier\": \"CI-ABJ-00016\",\n  \"firstname\": \"Adjobi Kra\",\n  \"lastname\": \"Kouamé\",\n  \"phone\": \"+2250701234516\",\n  \"credit_limit\": 400000\n}"
                 }
               },
               "status": "Created",
@@ -1001,7 +1001,7 @@
               "_postman_previewlanguage": "json",
               "header": [{ "key": "Content-Type", "value": "application/json" }],
               "cookie": [],
-              "body": "{\n  \"data\": {\n    \"id\": 17,\n    \"identifier\": \"CI-ABJ-00016\",\n    \"firstname\": \"Adjobi\",\n    \"lastname\": \"Kra Kouamé\",\n    \"phone\": \"+2250701234516\",\n    \"credit_limit\": \"400000.00\",\n    \"outstanding_debt\": 0,\n    \"available_credit\": 400000\n  }\n}"
+              "body": "{\n  \"data\": {\n    \"id\": 17,\n    \"identifier\": \"CI-ABJ-00016\",\n    \"firstname\": \"Adjobi Kra\",\n    \"lastname\": \"Kouamé\",\n    \"phone\": \"+2250701234516\",\n    \"credit_limit\": \"400000.00\",\n    \"outstanding_debt\": 0,\n    \"available_credit\": 400000\n  }\n}"
             },
             {
               "name": "422 Unprocessable Entity — Validation error",
@@ -1015,7 +1015,7 @@
                 "body": {
                   "mode": "raw",
                   "options": { "raw": { "language": "json" } },
-                  "raw": "{\n  \"identifier\": \"CI-ABJ-00001\",\n  \"firstname\": \"Adjobi\",\n  \"lastname\": \"Kra Kouamé\",\n  \"phone\": \"+2250700000001\",\n  \"credit_limit\": 400000\n}"
+                  "raw": "{\n  \"identifier\": \"CI-ABJ-00001\",\n  \"firstname\": \"Adjobi Kra\",\n  \"lastname\": \"Kouamé\",\n  \"phone\": \"+2250700000001\",\n  \"credit_limit\": 400000\n}"
                 }
               },
               "status": "Unprocessable Entity",
