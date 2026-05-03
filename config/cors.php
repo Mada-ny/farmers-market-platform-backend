@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://mada-ny.github.io'
+        'https://mada-ny.github.io',
     ],
 
     'allowed_origins_patterns' => [],
